@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  */
 
-import * as main from '../movieApp';
+import * as movieApp from '../movieApp';
+import * as movieservice from '../services/movieservice';
 import { IMovie } from '../models/Movie';
 import { body } from './html';
 
@@ -29,18 +30,17 @@ let movieList: IMovie[] = [
     Year: 'string'
   }];
   
-
-describe('tests for HTML manipulation', () => {
-
 beforeEach(() => {
   document.body.innerHTML = '';
   document.body.innerHTML = body;
 });
 
+describe('tests for HTML manipulation', () => {
+
   test('createHtml should add HTML correctly', () => {
     let container: HTMLDivElement = document.querySelector('#movie-container') as HTMLDivElement;
 
-    main.createHtml(movieList, container);
+    movieApp.createHtml(movieList, container);
 
     let divElements: NodeListOf<Element> = document.querySelectorAll('.movie');
     let h3Elements: NodeListOf<Element> = document.querySelectorAll('.title');
@@ -58,9 +58,27 @@ beforeEach(() => {
     
     let container: HTMLDivElement = document.querySelector('#movie-container') as HTMLDivElement;
     let expectedHtml: string = '<p>Inga sökresultat att visa</p>'
-    main.displayNoResult(container);
+    movieApp.displayNoResult(container);
 
     expect(container.innerHTML).toMatch(expectedHtml)
+  })
+
+})
+
+describe('tests for handleSubmit', () => {
+
+  test('should always clear inner HTML of #movie-container', () => {
+
+    let testHtml: string = '<p>I should not be here after function call</p>';
+    let container: HTMLDivElement = document.querySelector('#movie-container') as HTMLDivElement;
+    
+    container.innerHTML = testHtml;
+    let originalInnerHtml: string = container.innerHTML;
+
+    movieApp.handleSubmit();
+
+    expect(originalInnerHtml).toMatch(testHtml);
+    expect(container.innerHTML).toMatch('');
   })
 
 })
