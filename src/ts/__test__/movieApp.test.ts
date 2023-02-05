@@ -54,4 +54,13 @@ beforeEach(() => {
     expect(lastImgElement.src).toBe('https://url-return-of.jpg/') // vart läggs detta slash till? 😮 konkateneras alltid ett slash till src-attribut?
   })
 
+  test('displayNoResult should ad HTML correctly', () => {
+    
+    let container: HTMLDivElement = document.querySelector('#movie-container') as HTMLDivElement;
+    let expectedHtml: string = '<p>Inga sökresultat att visa</p>'
+    main.displayNoResult(container);
+
+    expect(container.innerHTML).toMatch(expectedHtml)
+  })
+
 })
