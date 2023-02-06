@@ -16,10 +16,15 @@ export let mockList: IMovie[] = [
     Year: '1980'
   }];
 
-  export const getData = async (testText: string): Promise<IMovie[]> => {
-    return new Promise (( resolve) => {
+  export const getData = async (searchText: string): Promise<IMovie[]> => {
+    return new Promise((resolve, reject) => {
+      if (searchText.length > 0) {
         resolve(mockList);
-      })
+      }
+      else {
+        reject([]);
+      }
+    })
 
   };
   

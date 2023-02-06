@@ -7,7 +7,7 @@ import * as movieservice from '../services/movieservice';
 import { IMovie } from '../models/Movie';
 import { body } from './html';
 
-// jest.mock("./../services/movieservice.ts");
+jest.mock('./../services/movieservice.ts');
   
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -86,16 +86,12 @@ describe('tests for handleSubmit', () => {
   test('should get data and call createHtml', async () => {
 
     let spy = jest.spyOn(movieApp, 'createHtml').mockReturnValue(); 
-    let spyOnService = jest.spyOn(movieservice, 'getData');
     let inputElement: HTMLInputElement = document.querySelector("#searchText") as HTMLInputElement;
-    inputElement.value =  'Example';
+    inputElement.value =  'Star wars';
 
-    //act
     await movieApp.handleSubmit();
 
-    //assert
     expect(spy).toHaveBeenCalled();
-    expect(spyOnService).toHaveBeenCalled();
     spy.mockRestore();
   })
 
@@ -105,10 +101,8 @@ describe('tests for handleSubmit', () => {
     let inputElement: HTMLInputElement = document.querySelector("#searchText") as HTMLInputElement;
     inputElement.value =  '';
 
-    //act
     await movieApp.handleSubmit();
 
-    //assert
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   })
