@@ -83,7 +83,7 @@ describe('tests for handleSubmit', () => {
     expect(container.innerHTML).toMatch('');
   })
 
-  test('should get data and call createHtml', async () => {
+  test('should call createHtml', async () => {
 
     let spy = jest.spyOn(movieApp, 'createHtml').mockReturnValue(); 
     let inputElement: HTMLInputElement = document.querySelector("#searchText") as HTMLInputElement;
@@ -97,7 +97,8 @@ describe('tests for handleSubmit', () => {
 
   test('should call displayNoResult', async () => {
 
-    let spy = jest.spyOn(movieApp, 'displayNoResult').mockReturnValue(); 
+    let spy = jest.spyOn(movieApp, 'displayNoResult').mockReturnValue();
+    let spyOnGetData = jest.spyOn(movieservice, 'getData').mockReturnValue(Promise.resolve([]));
     let inputElement: HTMLInputElement = document.querySelector("#searchText") as HTMLInputElement;
     inputElement.value =  '';
 
@@ -105,6 +106,20 @@ describe('tests for handleSubmit', () => {
 
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
+    spyOnGetData.mockRestore();
   })
 
+  
+  test('should call getData', async () => {
+
+    let inputElement = (document.querySelector('#searchText') as HTMLInputElement);
+    inputElement.value = 'example text';
+    let spy = jest.spyOn(movieservice, 'getData');
+
+    movieApp.handleSubmit();
+
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  })
+  
 })
