@@ -7,28 +7,7 @@ import * as movieservice from '../services/movieservice';
 import { IMovie } from '../models/Movie';
 import { body } from './html';
 
-let movieList: IMovie[] = [
-  {  
-    Title: 'A new hope',
-    imdbID: 'IV',
-    Type: 'string',
-    Poster: 'https://url-a-new.jpg',
-    Year: 'string'
-  }, 
-  {  
-    Title: 'The empire strikes back',
-    imdbID: 'V',
-    Type: 'string',
-    Poster: 'https://url-the-empire.jpg',
-    Year: 'string'
-  }, 
-  {
-    Title: 'Return of the Jedi',
-    imdbID: 'VI',
-    Type: 'string',
-    Poster: 'https://url-return-of.jpg',
-    Year: 'string'
-  }];
+// jest.mock("./../services/movieservice.ts");
   
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -36,6 +15,29 @@ beforeEach(() => {
 });
 
 describe('tests for HTML manipulation', () => {
+
+  let movieList: IMovie[] = [
+    {  
+      Title: 'A new hope',
+      imdbID: 'IV',
+      Type: 'string',
+      Poster: 'https://url-a-new.jpg',
+      Year: 'string'
+    }, 
+    {  
+      Title: 'The empire strikes back',
+      imdbID: 'V',
+      Type: 'string',
+      Poster: 'https://url-the-empire.jpg',
+      Year: 'string'
+    }, 
+    {
+      Title: 'Return of the Jedi',
+      imdbID: 'VI',
+      Type: 'string',
+      Poster: 'https://url-return-of.jpg',
+      Year: 'string'
+    }];
 
   test('createHtml should add HTML correctly', () => {
     let container: HTMLDivElement = document.querySelector('#movie-container') as HTMLDivElement;
@@ -79,6 +81,36 @@ describe('tests for handleSubmit', () => {
 
     expect(originalInnerHtml).toMatch(testHtml);
     expect(container.innerHTML).toMatch('');
+  })
+
+  test('should get data and call createHtml', async () => {
+
+    let spy = jest.spyOn(movieApp, 'createHtml').mockReturnValue(); 
+    let spyOnService = jest.spyOn(movieservice, 'getData');
+    let inputElement: HTMLInputElement = document.querySelector("#searchText") as HTMLInputElement;
+    inputElement.value =  'Example';
+
+    //act
+    await movieApp.handleSubmit();
+
+    //assert
+    expect(spy).toHaveBeenCalled();
+    expect(spyOnService).toHaveBeenCalled();
+    spy.mockRestore();
+  })
+
+  test('should call displayNoResult', async () => {
+
+    let spy = jest.spyOn(movieApp, 'displayNoResult').mockReturnValue(); 
+    let inputElement: HTMLInputElement = document.querySelector("#searchText") as HTMLInputElement;
+    inputElement.value =  '';
+
+    //act
+    await movieApp.handleSubmit();
+
+    //assert
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   })
 
 })
