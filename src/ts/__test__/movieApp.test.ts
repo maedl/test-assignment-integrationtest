@@ -123,3 +123,14 @@ describe('tests for handleSubmit', () => {
   })
   
 })
+
+/*
+describe('test for init function', () => {
+  
+  test('test for init function', () => {
+    
+    })
+
+})
+
+*/
